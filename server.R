@@ -170,7 +170,7 @@ shinyServer(function(input, output) {
       x_limAD <- isolate({c(NaN, NaN)})
       x_lim_diffBC <- isolate({c(NaN, NaN)})
       x_limBD <- isolate({c(NaN, NaN)})
-  
+      
       res <- isolate({
         list(
           convProbBbeatsA = NaN, convExpLossA_AB = NaN, convExpLossB_AB = NaN,
@@ -186,7 +186,7 @@ shinyServer(function(input, output) {
           convProbAbeatsC = NaN, convExpLossA_AC2 = NaN, convExpLossC_AC2 = NaN,
           revProbAbeatsC = NaN, revExpLossA_AC2 = NaN, revExpLossC_AC2 = NaN,
           arpuProbAbeatsC = NaN, arpuExpLossA_AC2 = NaN, arpuExpLossC_AC2 = NaN,
-        
+          
           convProbCbeatsB = NaN, convExpLossB_BC = NaN, convExpLossB_BC = NaN,
           revProbCbeatsB = NaN, revExpLossB_BC = NaN, revExpLossC_BC = NaN,
           arpuProbCbeatsB = NaN, arpuExpLossB_BC = NaN, arpuExpLossC_BC = NaN,
@@ -209,27 +209,27 @@ shinyServer(function(input, output) {
           sprintf('\n%.d', retention_A),
           sprintf('\n%.2g%%', conv_A*100),
           sprintf('\n%.2g%%', convret_A*100),
-          sprintf('\n%.2g €', arppu_A),
-          sprintf('\n%.2g €', arpu_A),
-          sprintf('[%.2g €, \n%.2g €]', hdi_A[1], hdi_A[2])
+          sprintf('\n%.2g â¬', arppu_A),
+          sprintf('\n%.2g â¬', arpu_A),
+          sprintf('[%.2g â¬, \n%.2g â¬]', hdi_A[1], hdi_A[2])
         ),
         B = c(
           sprintf('\n%.d', sample_B),
           sprintf('\n%.d', retention_B),
           sprintf('\n%.2g%%', conv_B*100),
           sprintf('\n%.2g%%', convret_B*100),
-          sprintf('\n%.2g €', arppu_B),
-          sprintf('\n%.2g €', arpu_B),
-          sprintf('[%.2g €, \n%.2g €]', hdi_B[1], hdi_B[2])
+          sprintf('\n%.2g â¬', arppu_B),
+          sprintf('\n%.2g â¬', arpu_B),
+          sprintf('[%.2g â¬, \n%.2g â¬]', hdi_B[1], hdi_B[2])
         ),
         C = c(
           sprintf('\n%.d', sample_C),
           sprintf('\n%.d', retention_C),
           sprintf('\n%.2g%%', conv_C*100),
           sprintf('\n%.2g%%', convret_C*100),
-          sprintf('\n%.2g €', arppu_C),
-          sprintf('\n%.2g €', arpu_C),
-          sprintf('[%.2g €, \n%.2g €]', hdi_C[1], hdi_C[2])
+          sprintf('\n%.2g â¬', arppu_C),
+          sprintf('\n%.2g â¬', arpu_C),
+          sprintf('[%.2g â¬, \n%.2g â¬]', hdi_C[1], hdi_C[2])
         )
       )
       colnames(tab) <- c(' ', 'A', 'B', 'C')
@@ -261,7 +261,7 @@ shinyServer(function(input, output) {
         Retention = c(
           sprintf('\n%.2g%% [\n%.2g%%]',as.numeric((convret_B-convret_A)/convret_A)*100, prob_B_beats_A(alpharet_A, betaret_A, alpharet_B, betaret_B)*100),
           sprintf('\n%.2g%% [\n%.2g%%]',as.numeric((convret_C-convret_A)/convret_A)*100, prob_C_beats_A(alpharet_A, betaret_A, alpharet_C, betaret_C)*100),
-          sprintf('\n%.2g%% [\n%.2g%%]',as.numeric((convret_C-convret_B)/convret_B)*100, prob_C_beats_B(alpharet_C, betaret_C, alpharet_B, betaret_B)*100)
+          sprintf('\n%.2g%% [\n%.2g%%]',as.numeric((convret_C-convret_B)/convret_B)*100, prob_C_beats_B(alpharet_B, betaret_B, alpharet_C, betaret_C)*100)
           
         )
       )
@@ -313,5 +313,51 @@ shinyServer(function(input, output) {
       tab
     }, spacing = 'xs')
     
+    output$table5 <- renderTable({
+      tab <- data.frame(
+        better = c(
+          paste('On ', input$testday, ', the Control group had a ', round(res$convProbAbeatsB*100, digits=2), '% greater conversion rate than Group B, and a ', round(res$convProbAbeatsC*100, digits=2),'% greater conversion rate compared to Group C.', sep=''),
+          paste('On ', input$testday, ', Group B had a ', round(res$convProbBbeatsA*100, digits=2), '% greater conversion rate compared to the Control group, and a ', round(res$convProbBbeatsC*100, digits=2),'% greater conversion rate compared to Group C.', sep=''),
+          paste('On ', input$testday, ', Group C had a ', round(res$convProbCbeatsA*100, digits=2), '% greater conversion rate compared to the Control group, and a ', round(res$convProbCbeatsB*100, digits=2),'% greater conversion rate compared to Group B.', sep='')
+          
+        )
+      )
+      colnames(tab) <- c(' ')
+      tab
+    }, spacing = 'xs')
+    
+    
+    output$table6 <- renderTable({
+      tab <- data.frame(
+        better = c(
+          paste('On ', input$testday, ', the Control group had a ', round(res$arpuProbAbeatsB*100,digits=2), '% greater lifetime value than Group B, and a ', round(res$arpuProbAbeatsC*100,digits=2), '% greater lifetime value compared to Group C.', sep=''),
+          paste('On ', input$testday, ', Group B had a ', round(res$arpuProbBbeatsA*100, digits=2), '% greater lifetime value compared to the Control group, and a ', round(res$arpuProbBbeatsC*100, digits=2), '% greater lifetime value compared to Group C.', sep=''),
+          paste('On ', input$testday, ', Group C had a ', round(res$arpuProbCbeatsA*100, digits=2), '% greater lifetime value compared to the Control group, and a ', round(res$arpuProbCbeatsB*100, digits=2), '% greater lifetime value compared to Group B.', sep='')
+        )
+      )
+      colnames(tab) <- c(' ')
+      tab
+    }, spacing = 'xs')
+    
+    
+    output$table7 <- renderTable({
+      tab <- data.frame(
+        better = c(
+          paste('On ', input$testday,', the Control group had a ', round(((convret_A-convret_B)/convret_B)*100,digits=2), '% greater retention rate compared to Group B (', round(prob_A_beats_B(alpharet_B, betaret_B, alpharet_A, betaret_A)*100,digits =0),
+                '% confidence), and a ', round(((convret_A-convret_C)/convret_C)*100,digits=2),'% greater retention rate compared to Group C (', round(prob_A_beats_C(alpharet_C, betaret_C, alpharet_A, betaret_A)*100,digits=0),
+                '% confidence).', sep=''),
+          
+          paste('On ', input$testday,', Group B had a ', round(((convret_B-convret_A)/convret_A)*100,digits=2), '% greater retention rate compared to the Control group (', round(prob_B_beats_A(alpharet_A, betaret_A, alpharet_B, betaret_B)*100,digits =0),
+                '% confidence), and a ', round(((convret_B-convret_C)/convret_C)*100,digits=2),'% greater retention rate compared to Group C (', round(prob_B_beats_C(alpharet_C, betaret_C, alpharet_B, betaret_B)*100,digits =0),
+                '% confidence).', sep=''),
+          
+          paste('On ', input$testday,', Group C had a ', round(((convret_C-convret_A)/convret_A)*100,digits=2), '% greater retention rate compared to the Control group (', round(prob_C_beats_A(alpharet_A, betaret_A, alpharet_C, betaret_C)*100,digits =0),
+                '% confidence), and a ', round(((convret_C-convret_B)/convret_B)*100,digits=2),'% greater retention rate compared to Group B (', round(prob_C_beats_B(alpharet_B, betaret_B, alpharet_C, betaret_C)*100,digits =0),
+                '% confidence).', sep='')
+        )
+      )
+      colnames(tab) <- c(' ')
+      tab
+    }, spacing = 'xs')
   })
 })
