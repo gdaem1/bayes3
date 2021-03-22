@@ -97,6 +97,11 @@ shinyUI(
           max = 1e7,
           value = 1e5
         ),
+        textInput(
+          'testday',
+          'Test Day',
+          value='Day 1'
+        ),
         actionButton(
           'button',
           'Calculate'
@@ -119,7 +124,9 @@ shinyUI(
         tableOutput('table1'),
         tableOutput('table2'),
         tableOutput('table3'),
-        tableOutput('table4')
+        tableOutput('table7'),
+        tableOutput('table6'),
+        tableOutput('table5')
       )
     )
   )
