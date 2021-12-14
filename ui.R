@@ -97,14 +97,30 @@ shinyUI(
           max = 1e7,
           value = 1e5
         ),
+        actionButton(
+          'button',
+          'Calculate'
+        ),
         textInput(
           'testday',
           'Test Day',
           value='Day 1'
         ),
-        actionButton(
-          'button',
-          'Calculate'
+        tags$br(),
+        textInput(
+          'Controlname',
+          'Control Group',
+          value='the Control group'
+        ),
+        textInput(
+          'Treatment1name',
+          'Treatment 1 Name',
+          value='Treatment 1'
+        ),
+        textInput(
+          'Treatment2name',
+          'Treatment 2 Name',
+          value='Treatment 2'
         ),
         hr(),
         tags$div(
@@ -121,12 +137,11 @@ shinyUI(
         )
       ),
       mainPanel(
-        tableOutput('table1'),
-        tableOutput('table2'),
-        tableOutput('table3'),
-        tableOutput('table7'),
-        tableOutput('table6'),
-        tableOutput('table5')
+        tableOutput('summary'),
+        tableOutput('stats'),
+        tableOutput('retention'),
+        tableOutput('ltv'),
+        tableOutput('conversion')
       )
     )
   )
