@@ -142,7 +142,7 @@ bayes_arpu <- function(
     diffTemp <- lambdaA/omegaA - lambdaC/omegaC
     arpuExpLossA_AC2 <- sum(diffTemp*(diffTemp > 0))/MSamples
     arpuExpLossC_AC2 <- sum(-diffTemp*(-diffTemp > 0))/MSamples
-   
+    
     arpuProbCbeatsB <- sum(lambdaC/omegaC > lambdaB/omegaB)/MSamples
     diffTemp <- lambdaC/omegaC - lambdaB/omegaB
     arpuExpLossB_BC <- sum(diffTemp*(diffTemp > 0))/MSamples
